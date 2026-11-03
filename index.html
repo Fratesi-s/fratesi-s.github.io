@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Fratesi's Pizza — Concept</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="A website concept for Fratesi's Pizza, Downtown Miami. Tavern-style bar pies on Flagler St.">
+<meta property="og:title" content="Fratesi's Pizza — website concept">
+<meta property="og:description" content="Tavern-style bar pies, cut edge to edge. 69 E Flagler St, Miami.">
+<meta property="og:image" content="hero.jpg">
+<meta name="theme-color" content="#7d0f12">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shrikhand&family=Work+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout: an overhead bar pie that gets party-cut as you scroll, then a red-table menu, a "get a table" ticket, a channel-flipping TV of the room, the story, and visit info. Red booths + stained glass. */
+:root{
+  --booth:#7d0f12;     /* red vinyl booth */
+  --tomato:#c8211d;
+  --cream:#f6ead3;     /* menu paper */
+  --amber:#eaa53c;     /* stained-glass amber */
+  --glass:#3f7d4e;     /* stained-glass green */
+  --wood:#3a1f14;
+  --ink:#1a0d0a;
+  --muted:#c9b59a;
+  --f-display:"Shrikhand","Cooper Black",Georgia,serif;
+  --f-body:"Work Sans","Helvetica Neue",Arial,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --gl:max(16px,env(safe-area-inset-left,0px)); --gr:max(16px,env(safe-area-inset-right,0px));
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--cream);font-family:var(--f-body);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+h1,h2,h3{margin:0;font-weight:400;text-wrap:balance}
+.disp{font-family:var(--f-display);line-height:.95;letter-spacing:.005em}
+.mono{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+.wrap{max-width:1180px;margin:0 auto;padding-left:var(--gl);padding-right:var(--gr)}
+
+/* concept badge */
+.concept{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:50;background:rgba(26,13,10,.88);border:1px solid rgba(246,234,211,.2);border-radius:99px;padding:7px 14px;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap;backdrop-filter:blur(8px)}
+.concept b{color:var(--amber);font-weight:500}
+@media (max-width:560px){.concept{font-size:9px;letter-spacing:.06em;padding:6px 10px;max-width:calc(100% - 24px);white-space:normal;text-align:center}}
+
+/* bar */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--ink)}
+.bar{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:30;display:flex;justify-content:space-between;align-items:center;padding-left:var(--gl);padding-right:var(--gr);padding-block:12px;pointer-events:none}
+.bar>*{pointer-events:auto}
+.logo{font-family:var(--f-display);font-size:24px;color:#ff8fa3;text-decoration:none;text-shadow:0 2px 0 var(--booth);padding:2px 14px;border-radius:99px;background:rgba(26,13,10,.55);backdrop-filter:blur(8px)}
+.bar nav{display:flex;gap:6px}
+.pill{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;padding:9px 14px;border-radius:99px;border:1px solid rgba(246,234,211,.3);background:rgba(26,13,10,.55);backdrop-filter:blur(8px)}
+.pill.hot{background:var(--amber);border-color:var(--amber);color:var(--ink);font-weight:500}
+@media (max-width:600px){.bar .hide-s{display:none}}
+
+/* hero */
+.hero{position:relative;height:420vh;background:#000}
+.stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+#cut{position:absolute;inset:0;width:100%;height:100%;display:block}
+.shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(to bottom,rgba(26,13,10,.55),transparent 25%,transparent 60%,rgba(26,13,10,.85))}
+.beat{position:absolute;left:var(--gl);right:var(--gr);bottom:clamp(70px,12vh,120px);max-width:1180px;margin:0 auto;transition:opacity .5s,transform .6s cubic-bezier(.2,.7,.2,1);text-shadow:0 4px 30px rgba(0,0,0,.6)}
+.beat.off{opacity:0;transform:translateY(22px)}
+.beat .mono{color:var(--amber);display:block;margin-bottom:12px}
+.big{font-size:clamp(58px,12vw,180px);color:#ff8fa3;text-shadow:0 5px 0 var(--booth),0 10px 40px rgba(0,0,0,.6)}
+.mid{font-size:clamp(40px,7vw,104px);max-width:13ch}
+.mid em{font-style:normal;color:var(--amber)}
+.ctas{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;padding:15px 22px;border-radius:99px;border:1.5px solid var(--cream);background:rgba(26,13,10,.55);color:var(--cream);cursor:pointer}
+.btn.amber{background:var(--amber);border-color:var(--amber);color:var(--ink);font-weight:500}
+.btn.red{background:var(--tomato);border-color:var(--tomato);color:var(--cream);font-weight:500}
+.btn:hover{transform:translateY(-1px)}
+.hint{position:absolute;right:var(--gr);top:calc(72px + env(safe-area-inset-top,0px));text-align:right;color:var(--muted)}
+.hint b{color:var(--cream);font-weight:400;font-variant-numeric:tabular-nums}
+
+/* marquee */
+.marq{background:var(--tomato);color:var(--cream);overflow:hidden;white-space:nowrap;border-block:3px solid var(--ink)}
+.marq div{display:inline-flex;gap:26px;padding-block:12px;animation:roll 28s linear infinite;font-family:var(--f-display);font-size:28px}
+.marq span{color:var(--amber)}
+@keyframes roll{to{transform:translateX(-50%)}}
+
+section.band{padding-block:clamp(70px,10vw,130px)}
+.k{display:flex;align-items:center;gap:12px;color:var(--amber);margin-bottom:18px}
+.k::after{content:"";flex:1;height:1px;background:rgba(246,234,211,.18)}
+.h2{font-size:clamp(46px,7vw,96px)}
+
+/* tabletop menu */
+.menu{background:radial-gradient(120% 90% at 50% 0%,#a3171a,var(--booth) 60%,#4d090b);border-block:1px solid rgba(0,0,0,.4)}
+.menu .lede{max-width:52ch;color:#f3dcc4;margin-top:12px}
+.table{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:clamp(24px,4vw,56px);margin-top:40px;align-items:start}
+.pies{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(12px,2.4vw,28px)}
+.pie{background:none;border:0;padding:0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--cream);text-align:center}
+.pie svg{width:100%;max-width:220px;aspect-ratio:1;filter:drop-shadow(0 14px 18px rgba(0,0,0,.45));transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+.pie:hover svg{transform:rotate(-8deg) scale(1.04)}
+.pie.on svg{transform:scale(1.08)}
+.pie .nm{font-family:var(--f-display);font-size:clamp(16px,2vw,22px);line-height:1.05}
+.pie.on .nm{color:var(--amber)}
+.ticket{position:sticky;top:90px;background:var(--cream);color:var(--ink);border-radius:6px;padding:26px 24px;box-shadow:0 30px 60px -20px rgba(0,0,0,.6);background-image:radial-gradient(circle at 0 50%,transparent 10px,var(--cream) 11px),radial-gradient(circle at 100% 50%,transparent 10px,var(--cream) 11px);background-size:51% 100%;background-position:left,right;background-repeat:no-repeat}
+.ticket .mono{color:#8a5a3a}
+.slipimg{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:4px;margin-bottom:14px;box-shadow:0 6px 14px rgba(0,0,0,.18)}
+.ticket h3{font-family:var(--f-display);font-size:clamp(32px,3.6vw,46px);color:var(--tomato);margin:8px 0 6px}
+.ticket ul{list-style:none;padding:0;margin:14px 0 18px;display:flex;flex-wrap:wrap;gap:6px}
+.ticket li{font-family:var(--f-mono);font-size:12px;padding:5px 10px;border-radius:99px;border:1.5px solid rgba(26,13,10,.2)}
+.ticket p{margin:0;color:#4a2f22}
+.ticket .btn{border-color:var(--ink);color:var(--ink);background:transparent}
+.ticket .btn.red{background:var(--tomato);color:var(--cream);border-color:var(--tomato)}
+.sides{margin-top:34px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.side{border:1px dashed rgba(246,234,211,.35);border-radius:10px;padding:14px 16px;min-width:0}
+.side b{display:block;font-family:var(--f-display);font-weight:400;font-size:20px;color:var(--amber)}
+.side span{font-size:14px;color:#f3dcc4}
+@media (max-width:860px){.table{grid-template-columns:1fr}.ticket{position:relative;top:0}.sides{grid-template-columns:1fr}}
+@media (max-width:480px){.pies{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* get a table */
+.seat{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,64px);align-items:start;margin-top:36px}
+.window{background:var(--wood);border:1px solid rgba(246,234,211,.15);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:16px}
+.window .row{display:flex;justify-content:space-between;gap:14px;align-items:baseline;border-bottom:1px dashed rgba(246,234,211,.15);padding-bottom:12px}
+.window .row:last-child{border:0;padding:0}
+.window .row b{font-family:var(--f-display);font-weight:400;font-size:clamp(24px,3vw,34px);color:var(--amber);text-align:right}
+.window .row span{color:var(--muted)}
+.tips{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:14px}
+.tips li{display:grid;grid-template-columns:46px minmax(0,1fr);gap:12px;align-items:start}
+.tips .n{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:var(--tomato);font-family:var(--f-display);font-size:22px}
+.tips b{display:block}
+.tips span{color:var(--muted);font-size:15px}
+@media (max-width:820px){.seat{grid-template-columns:1fr}}
+
+/* tv */
+.room{background:linear-gradient(#2a150d,#1a0d0a)}
+.tvwrap{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.7fr);gap:clamp(24px,4vw,56px);align-items:center;margin-top:36px}
+.tv{position:relative;background:linear-gradient(145deg,#6b3a22,#3a1f14);border-radius:28px;padding:26px 26px 70px;box-shadow:inset 0 2px 0 rgba(255,255,255,.12),0 30px 60px -20px #000}
+.screen{position:relative;aspect-ratio:4/3;border-radius:22px/18px;overflow:hidden;background:#111;box-shadow:inset 0 0 40px rgba(0,0,0,.9)}
+.screen img{width:100%;height:100%;object-fit:cover;filter:saturate(1.1) contrast(1.05)}
+.screen::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 2px,transparent 2px 4px),radial-gradient(120% 100% at 50% 50%,transparent 60%,rgba(0,0,0,.55));pointer-events:none}
+#static{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .15s;pointer-events:none}
+.osd{position:absolute;top:14px;right:18px;font-family:var(--f-mono);font-size:20px;color:#8cff8c;text-shadow:0 0 8px #3f3;z-index:2}
+.cap{position:absolute;left:18px;bottom:14px;right:18px;font-family:var(--f-mono);font-size:13px;color:#fff;text-shadow:0 1px 4px #000;z-index:2}
+.knobs{position:absolute;left:26px;right:26px;bottom:18px;display:flex;justify-content:space-between;align-items:center}
+.knob{width:38px;height:38px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#d9c3a0,#7a5a3a);border:0;cursor:pointer;box-shadow:0 3px 6px rgba(0,0,0,.5)}
+.grille{flex:1;height:18px;margin:0 16px;background:repeating-linear-gradient(90deg,#2a150d 0 3px,transparent 3px 7px);border-radius:4px;opacity:.7}
+.chlist{display:flex;flex-direction:column;gap:8px}
+.ch{display:flex;gap:12px;align-items:center;padding:12px 14px;border-radius:12px;border:1px solid rgba(246,234,211,.15);background:rgba(246,234,211,.03);cursor:pointer;text-align:left;color:var(--cream);font:inherit}
+.ch .no{font-family:var(--f-mono);color:var(--amber);min-width:44px}
+.ch.on{border-color:var(--amber);background:rgba(234,165,60,.12)}
+@media (max-width:820px){.tvwrap{grid-template-columns:1fr}}
+
+/* story */
+.timeline{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:36px}
+.stop{border-top:3px solid var(--tomato);padding-top:16px;min-width:0}
+.stop .when{color:var(--amber)}
+.stop h3{font-family:var(--f-display);font-size:clamp(26px,3vw,36px);margin:8px 0}
+.stop p{margin:0;color:var(--muted)}
+.facts{display:flex;flex-wrap:wrap;gap:12px 32px;margin-top:36px}
+.facts div b{display:block;font-family:var(--f-display);font-weight:400;font-size:44px;color:#ff8fa3;line-height:1;font-variant-numeric:tabular-nums}
+.facts div span{color:var(--muted)}
+@media (max-width:760px){.timeline{grid-template-columns:1fr}}
+
+/* visit */
+.visit{background:var(--cream);color:var(--ink)}
+.visit .k{color:var(--tomato)}
+.visit .k::after{background:rgba(26,13,10,.15)}
+.vgrid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:clamp(24px,5vw,64px);margin-top:30px}
+.vgrid .h2{color:var(--tomato)}
+.addr{font-family:var(--f-display);font-size:clamp(30px,4vw,48px);line-height:1.05;margin-top:10px}
+.vlist{display:flex;flex-direction:column;gap:0;border-top:1.5px solid rgba(26,13,10,.15)}
+.vlist div{display:flex;justify-content:space-between;gap:14px;padding:14px 0;border-bottom:1.5px solid rgba(26,13,10,.15)}
+.vlist span{color:#6a4a36}
+.vlist b{font-weight:500;text-align:right}
+.vlist a{text-decoration:underline;text-underline-offset:3px}
+.visit .btn{border-color:var(--ink);color:var(--ink);background:transparent}
+.visit .btn.red{background:var(--tomato);border-color:var(--tomato);color:var(--cream)}
+@media (max-width:820px){.vgrid{grid-template-columns:1fr}}
+footer{padding-block:40px 80px;color:var(--muted);text-align:center;font-size:14px}
+
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.marq div{animation:none}.hero{height:100svh}.beat{transition:none}}
+</style>
+</head>
+<body>
+<div class="concept" role="note">Website concept by <b>Bernardo Britto</b> · not the official site</div>
+
+<header class="bar">
+  <a class="logo" href="#top">Fratesi's</a>
+  <nav aria-label="Sections">
+    <a class="pill hide-s" href="#menu">Menu</a>
+    <a class="pill hide-s" href="#room">The room</a>
+    <a class="pill hot" href="#table">Get a table</a>
+  </nav>
+</header>
+
+<main id="top">
+  <section class="hero" id="hero" aria-label="Fratesi's Pizza">
+    <div class="stage">
+      <canvas id="cut" aria-hidden="true"></canvas>
+      <div class="shade"></div>
+      <div class="hint mono" aria-hidden="true">Squares cut<br><b id="sq">0</b> / 36</div>
+      <div class="beat" data-from="0" data-to=".22">
+        <span class="mono">69 E Flagler St · Downtown Miami</span>
+        <h1 class="disp big">Fratesi's</h1>
+        <p style="margin:14px 0 0;max-width:40ch;font-size:clamp(16px,1.8vw,20px)">Tavern-style bar pies, born in an alley oven in Philadelphia. Scroll to cut one.</p>
+      </div>
+      <div class="beat off" data-from=".22" data-to=".62">
+        <span class="mono">The party cut</span>
+        <h2 class="disp mid">Cut edge to edge. <em>Thin enough to snap.</em></h2>
+      </div>
+      <div class="beat off" data-from=".62" data-to=".86">
+        <span class="mono">Fair warning</span>
+        <h2 class="disp mid">One of Miami's <em>hardest seats</em> to snag.</h2>
+      </div>
+      <div class="beat off" data-from=".86" data-to="1.01">
+        <span class="mono">Two ways in</span>
+        <h2 class="disp mid">Grab a booth or take it <em>to go.</em></h2>
+        <div class="ctas">
+          <a class="btn amber" href="https://www.sevenrooms.com/explore/fratesispizza/reservations/create/search/" target="_blank" rel="noopener">Reserve on SevenRooms ↗</a>
+          <a class="btn" href="https://order.toasttab.com/online/fratesispizza" target="_blank" rel="noopener">Order pickup ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="marq" aria-hidden="true"><div>
+    <span>✦</span> Bar pies <span>✦</span> Pitchers <span>✦</span> Sitcom reruns <span>✦</span> Red booths <span>✦</span> Flagler St <span>✦</span> Bar pies <span>✦</span> Pitchers <span>✦</span> Sitcom reruns <span>✦</span> Red booths <span>✦</span> Flagler St
+  </div></div>
+
+  <section class="band menu" id="menu">
+    <div class="wrap">
+      <div class="k mono">The pies</div>
+      <h2 class="disp h2">Pick a pie</h2>
+      <p class="lede">Every pie is cartoonishly thin, with cheese run right to the edge and a crust that cracks. Tap one to see what's on it.</p>
+      <div class="table">
+        <div class="pies" id="pies"></div>
+        <aside class="ticket" id="ticket" aria-live="polite"></aside>
+      </div>
+      <div class="sides">
+        <div class="side"><b>Tahini Caesar</b><span>The first-timer order, with Grana Padano.</span></div>
+        <div class="side"><b>Arugula salad</b><span>Olive oil, salt, pepper, pecorino. Underrated.</span></div>
+        <div class="side" style="display:grid;grid-template-columns:72px minmax(0,1fr);gap:12px;align-items:center"><img src="tiramisu.jpg" alt="Café Bustelo tiramisu" style="width:72px;height:72px;object-fit:cover;border-radius:8px"><div><b>Bustelo tiramisu</b><span>Soaked in Café Bustelo. Save room.</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="table">
+    <div class="wrap">
+      <div class="k mono">How to get a table</div>
+      <h2 class="disp h2">Getting in at Fratesi's</h2>
+      <div class="seat">
+        <div class="window" aria-live="polite">
+          <div class="row"><span class="mono">Today</span><b id="todayTxt">—</b></div>
+          <div class="row"><span class="mono">Booking window</span><b id="winTxt">—</b></div>
+          <div class="row"><span class="mono">Walk-in tip</span><b id="walkTxt">—</b></div>
+          <a class="btn red" style="justify-content:center" href="https://www.sevenrooms.com/explore/fratesispizza/reservations/create/search/" target="_blank" rel="noopener">Find a table on SevenRooms ↗</a>
+        </div>
+        <ol class="tips">
+          <li><span class="n">1</span><div><b>Book two weeks out</b><span>Tables release about two weeks ahead, and Fridays and Sundays go first.</span></div></li>
+          <li><span class="n">2</span><div><b>Watch for cancellations</b><span>There's a four-hour cancellation window, so check the morning of, or when the weather turns.</span></div></li>
+          <li><span class="n">3</span><div><b>Walk in early or late</b><span>About 20 seats are held for walk-ins. Line up around 4:45 pm, or come after 9 when tables turn.</span></div></li>
+          <li><span class="n">4</span><div><b>Or skip the line</b><span>Order a pie for pickup and eat it like a local.</span></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="band room" id="room">
+    <div class="wrap">
+      <div class="k mono">The room</div>
+      <h2 class="disp h2">Now playing on Flagler St</h2>
+      <div class="tvwrap">
+        <div class="tv">
+          <div class="screen">
+            <img id="tvImg" src="hero.jpg" alt="">
+            <canvas id="static" width="160" height="120" aria-hidden="true"></canvas>
+            <div class="osd" id="osd">CH 02</div>
+            <div class="cap" id="cap"></div>
+          </div>
+          <div class="knobs"><button class="knob" id="chDown" type="button" aria-label="Previous channel"></button><div class="grille"></div><button class="knob" id="chUp" type="button" aria-label="Next channel"></button></div>
+        </div>
+        <div class="chlist" id="chlist"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="story">
+    <div class="wrap">
+      <div class="k mono">The story</div>
+      <h2 class="disp h2">From an alley oven to Flagler St</h2>
+      <div class="timeline">
+        <div class="stop"><span class="mono when">Where it started</span><h3>Philadelphia</h3><p>The first pies came out of an alley oven in Philly.</p></div>
+        <div class="stop"><span class="mono when">The pop-up years</span><h3>Over Under & Tâm Tâm</h3><p>One night a week, downtown, with lines out the door.</p></div>
+        <div class="stop"><span class="mono when">July 2025</span><h3>69 E Flagler</h3><p>Chris Fratesi and Brian Griffiths open their own place on the same block.</p></div>
+      </div>
+      <div class="facts">
+        <div><b>~200</b><span>pies a night</span></div>
+        <div><b>46</b><span>seats inside</span></div>
+        <div><b>12</b><span>on the patio</span></div>
+        <div><b>36</b><span>squares per pie</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band visit" id="visit">
+    <div class="wrap vgrid">
+      <div>
+        <div class="k mono">Visit</div>
+        <h2 class="disp h2">Come hungry</h2>
+        <p class="addr">69 E Flagler St<br>Miami, FL 33131</p>
+        <div class="ctas">
+          <a class="btn red" href="https://www.sevenrooms.com/explore/fratesispizza/reservations/create/search/" target="_blank" rel="noopener">Reserve ↗</a>
+          <a class="btn" href="https://order.toasttab.com/online/fratesispizza" target="_blank" rel="noopener">Order pickup ↗</a>
+          <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Fratesi%27s%20Pizza%2069%20E%20Flagler%20St%20Miami" target="_blank" rel="noopener">Directions ↗</a>
+        </div>
+      </div>
+      <div class="vlist">
+        <div><span>Hours</span><b>Wed–Sat 5–11 pm<br>Sun 3–10 pm<br>Closed Mon–Tue</b></div>
+        <div><span>Phone</span><b>305-456-1151</b></div>
+        <div><span>Email</span><b>info@fratesispizza.com</b></div>
+        <div><span>Instagram</span><b><a href="https://www.instagram.com/fratesi_pizza/" target="_blank" rel="noopener">@fratesi_pizza</a></b></div>
+        <div><span>Merch</span><b><a href="https://www.fratesispizza.com/merch" target="_blank" rel="noopener">Shop</a></b></div>
+        <div><span>Careers</span><b><a href="https://www.badjujumiami.com/careers" target="_blank" rel="noopener">Join the team</a></b></div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>A website concept made for Fratesi's Pizza by Bernardo Britto. Photos from @fratesi_pizza. Hours and details may change, so check SevenRooms before you go.</footer>
+
+<script>
+(() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = s => document.querySelector(s);
+
+  // ---------- Hero: scroll party-cut ----------
+  const cv = $('#cut'), ctx = cv.getContext('2d'), hero = $('#hero');
+  const beats = [...document.querySelectorAll('.beat')];
+  const img = new Image(); img.src = 'hero.jpg';
+  const PIE = { x: 628, y: 349, r: 290 }, N = 6; // pie centre/radius in the 1248x704 photo, 6x6 party cut
+  let p = 0, shown = 0;
+  function size() { const d = Math.min(devicePixelRatio || 1, 2); cv.width = cv.clientWidth * d; cv.height = cv.clientHeight * d; draw(); }
+  function draw() {
+    if (!img.naturalWidth) return;
+    const cw = cv.width, ch = cv.height, cover = Math.max(cw / img.naturalWidth, ch / img.naturalHeight) * 1.02;
+    // portrait screens: fit the whole pie to the width instead of zooming into it
+    const s = cw < ch ? Math.min(cover, (cw * .94) / (2 * PIE.r)) : cover;
+    // keep the pie centred on any screen shape
+    const ox = cw / 2 - PIE.x * s, oy = ch / 2 - PIE.y * s - (cw < ch ? ch * .08 : 0);
+    const g = ctx.createRadialGradient(cw / 2, ch / 2, 0, cw / 2, ch / 2, Math.max(cw, ch) * .7);
+    g.addColorStop(0, '#9c1416'); g.addColorStop(1, '#3d0708'); ctx.fillStyle = g; ctx.fillRect(0, 0, cw, ch);
+    ctx.drawImage(img, ox, oy, img.naturalWidth * s, img.naturalHeight * s);
+    const cx = ox + PIE.x * s, cy = oy + PIE.y * s, r = PIE.r * s, step = 2 * r / N;
+    // cutting runs from p=.12 to p=.6: 5 vertical cuts then 5 horizontal
+    const cutP = Math.max(0, Math.min(1, (p - .12) / .48)), total = (N - 1) * 2, done = cutP * total;
+    ctx.save(); ctx.beginPath(); ctx.arc(cx, cy, r, 0, 7); ctx.clip();
+    ctx.lineCap = 'round';
+    let wheel = null;
+    for (let i = 0; i < total; i++) {
+      const f = Math.max(0, Math.min(1, done - i)); if (f <= 0) break;
+      const vert = i < N - 1, k = (vert ? i : i - (N - 1)) + 1, pos = -r + k * step;
+      const half = Math.sqrt(Math.max(0, r * r - pos * pos));
+      let x1, y1, x2, y2;
+      if (vert) { x1 = x2 = cx + pos; y1 = cy - half; y2 = cy - half + 2 * half * f; }
+      else { y1 = y2 = cy + pos; x1 = cx - half; x2 = cx - half + 2 * half * f; }
+      ctx.strokeStyle = 'rgba(40,14,6,.75)'; ctx.lineWidth = Math.max(2, r * .018);
+      ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+      ctx.strokeStyle = 'rgba(255,214,150,.35)'; ctx.lineWidth = Math.max(1, r * .006);
+      ctx.beginPath(); ctx.moveTo(x1 + 2, y1 + 2); ctx.lineTo(x2 + 2, y2 + 2); ctx.stroke();
+      if (f < 1) wheel = { x: x2, y: y2 };
+    }
+    ctx.restore();
+    // cutter wheel riding the current line
+    if (wheel && cutP < 1) {
+      const wr = r * .09;
+      ctx.save(); ctx.translate(wheel.x, wheel.y); ctx.rotate(done * 6);
+      ctx.fillStyle = 'rgba(220,225,230,.95)'; ctx.beginPath(); ctx.arc(0, 0, wr, 0, 7); ctx.fill();
+      ctx.strokeStyle = 'rgba(90,95,100,.9)'; ctx.lineWidth = wr * .12; ctx.stroke();
+      ctx.fillStyle = '#5a1a12'; ctx.beginPath(); ctx.arc(0, 0, wr * .28, 0, 7); ctx.fill();
+      ctx.restore();
+    }
+    // lift one square (p .62 -> .86)
+    const lift = Math.max(0, Math.min(1, (p - .62) / .24));
+    if (lift > 0) {
+      const gx = 3, gy = 2; // a square just up-right of centre
+      const sx = cx - r + gx * step, sy = cy - r + gy * step, e = 1 - Math.pow(1 - lift, 3);
+      const up = e * r * .55, scale = 1 + e * .45;
+      ctx.save(); ctx.fillStyle = 'rgba(30,8,4,.62)'; ctx.fillRect(sx, sy, step, step); ctx.restore(); // the gap left behind
+      ctx.save();
+      ctx.shadowColor = 'rgba(0,0,0,.55)'; ctx.shadowBlur = 30 * e; ctx.shadowOffsetY = 26 * e;
+      const w = step * scale, nx = sx + step / 2 - w / 2 + e * r * .12, ny = sy + step / 2 - w / 2 - up;
+      const ix = (sx - ox) / s, iy = (sy - oy) / s, iw = step / s; // same square, taken from the photo itself
+      ctx.drawImage(img, ix, iy, iw, iw, nx, ny, w, w);
+      ctx.restore();
+    }
+    const vDone = Math.min(N - 1, done), hDone = Math.max(0, done - (N - 1));
+    $('#sq').textContent = Math.min(36, Math.round((Math.floor(vDone) + 1) * (Math.floor(hDone) + 1) * (cutP > 0 ? 1 : 0)));
+  }
+  function onScroll() {
+    const rc = hero.getBoundingClientRect(), span = rc.height - innerHeight;
+    p = reduce ? 1 : (span > 0 ? Math.max(0, Math.min(1, -rc.top / span)) : 0);
+    beats.forEach(b => b.classList.toggle('off', !(p >= +b.dataset.from && p < +b.dataset.to)));
+    requestAnimationFrame(draw);
+  }
+  img.onload = () => { size(); onScroll(); };
+  addEventListener('resize', size); addEventListener('scroll', onScroll, { passive: true });
+
+  // ---------- Menu: drawn pies ----------
+  const PIES = [
+    { id: 'boy', photo: 'pie-boy.jpg', name: 'Demon Pig Boy', tops: ['Pepperoni cups', 'House-pickled hot peppers', 'Chile oil', 'Charred jalapeño'], line: 'The one everybody orders. Curled pepperoni cups that hold little pools of chile oil.', draw: { sauce: '#c8341f', items: [['cup', 16], ['jal', 9], ['oil', 14]] } },
+    { id: 'girl', photo: 'pie-girl.jpg', name: 'Demon Pig Girl', tops: ['Chicken sausage', 'Banana peppers', 'Hot honey'], line: 'Sweet heat: chicken sausage and banana peppers under a drizzle of hot honey.', draw: { sauce: '#c8341f', items: [['saus', 14], ['ban', 10], ['honey', 6]] } },
+    { id: 'carm', photo: 'pie-carm.jpg', name: "Carmelita's", tops: ['Fresh mozzarella', 'Red sauce', 'Basil'], line: 'The plain pie, done right, with pools of fresh mozzarella.', draw: { sauce: '#c8341f', items: [['mozz', 11], ['basil', 6]] } },
+    { id: 'red', name: 'Red Top', tops: ['Red sauce', 'Pecorino', 'Garlic', 'Basil'], line: 'No mozz, all sauce: pecorino, garlic and basil on top.', draw: { sauce: '#b8261a', red: true, items: [['garlic', 14], ['basil', 7], ['pec', 26]] } },
+    { id: 'moon', photo: 'pie-moon.jpg', name: "Cosmo's Moon", tops: ['Ricotta', 'White pie', 'Add hot honey'], line: 'The white pie. Get the hot honey on it.', draw: { white: true, items: [['ric', 12], ['honey', 4]] } },
+    { id: 'vodka', name: "Svetlana's Vodka", tops: ['Vodka sauce', 'Basil'], line: 'Pink vodka sauce, basil, and that cracker-thin crust.', draw: { sauce: '#e2774f', vodka: true, items: [['basil', 8], ['mozz', 5]] } }
+  ];
+  function rnd(seed) { let s = seed; return () => (s = (s * 9301 + 49297) % 233280) / 233280; }
+  function pieSVG(pd, seed) {
+    const R = rnd(seed), d = pd.draw, out = [];
+    out.push('<circle cx="100" cy="100" r="96" fill="#bfc4c8"/><circle cx="100" cy="100" r="90" fill="#9aa0a5"/>');
+    out.push('<circle cx="100" cy="100" r="86" fill="#c98a3e"/>');
+    const base = d.white ? '#f4e6c8' : d.red ? d.sauce : d.vodka ? '#e9925f' : '#f2c25a';
+    out.push(`<circle cx="100" cy="100" r="81" fill="${base}"/>`);
+    if (!d.white && !d.red) for (let i = 0; i < 26; i++) { const a = R() * 6.28, rr = R() * 72; out.push(`<circle cx="${100 + Math.cos(a) * rr}" cy="${100 + Math.sin(a) * rr}" r="${4 + R() * 7}" fill="${d.vodka ? '#f3b07d' : '#f7d77c'}" opacity=".8"/>`); }
+    const pt = () => { const a = R() * 6.28, rr = Math.sqrt(R()) * 68; return [100 + Math.cos(a) * rr, 100 + Math.sin(a) * rr]; };
+    for (const [t, n] of d.items) for (let i = 0; i < n; i++) {
+      const [x, y] = pt();
+      if (t === 'cup') out.push(`<circle cx="${x}" cy="${y}" r="8" fill="#9e2a1a"/><circle cx="${x}" cy="${y}" r="5" fill="#c2412a"/><circle cx="${x}" cy="${y}" r="2.4" fill="#e07a2a" opacity=".9"/>`);
+      if (t === 'jal') out.push(`<circle cx="${x}" cy="${y}" r="6" fill="none" stroke="#3f7d2e" stroke-width="3"/><circle cx="${x}" cy="${y}" r="2.2" fill="#d8e6a0"/>`);
+      if (t === 'oil') out.push(`<circle cx="${x}" cy="${y}" r="${2 + R() * 2}" fill="#d0341c" opacity=".7"/>`);
+      if (t === 'saus') out.push(`<circle cx="${x}" cy="${y}" r="5.5" fill="#a5643a"/><circle cx="${x - 1.5}" cy="${y - 1.5}" r="2" fill="#c58250"/>`);
+      if (t === 'ban') out.push(`<path d="M${x - 6} ${y} a6 6 0 0 0 12 0" fill="none" stroke="#e8c93a" stroke-width="3.4" stroke-linecap="round"/>`);
+      if (t === 'honey') out.push(`<path d="M${x - 22} ${y} q11 -10 22 0 t22 0" fill="none" stroke="#e8a21e" stroke-width="2.2" opacity=".85"/>`);
+      if (t === 'mozz') out.push(`<ellipse cx="${x}" cy="${y}" rx="${9 + R() * 4}" ry="${7 + R() * 3}" fill="#fff6e6"/>`);
+      if (t === 'basil') out.push(`<ellipse cx="${x}" cy="${y}" rx="6" ry="3.4" transform="rotate(${R() * 180} ${x} ${y})" fill="#2f6b2a"/>`);
+      if (t === 'garlic') out.push(`<ellipse cx="${x}" cy="${y}" rx="2.6" ry="1.8" fill="#f5ecd2"/>`);
+      if (t === 'pec') out.push(`<rect x="${x}" y="${y}" width="3" height="1.4" fill="#fff3d0" opacity=".9"/>`);
+      if (t === 'ric') out.push(`<circle cx="${x}" cy="${y}" r="${7 + R() * 5}" fill="#fffdf6"/>`);
+    }
+    // party-cut grid
+    for (let k = 1; k < 6; k++) { const v = 19 + k * 27; out.push(`<line x1="${v}" y1="19" x2="${v}" y2="181" stroke="rgba(60,20,8,.35)" stroke-width="1.2"/><line x1="19" y1="${v}" x2="181" y2="${v}" stroke="rgba(60,20,8,.35)" stroke-width="1.2"/>`); }
+    return `<svg viewBox="0 0 200 200" aria-hidden="true"><defs><clipPath id="c${seed}"><circle cx="100" cy="100" r="86"/></clipPath></defs><circle cx="100" cy="100" r="96" fill="#bfc4c8"/><g clip-path="url(#c${seed})">${out.slice(1).join('')}</g></svg>`;
+  }
+  const piesEl = $('#pies'), ticket = $('#ticket');
+  piesEl.innerHTML = PIES.map((pd, i) => `<button class="pie" type="button" data-i="${i}" aria-pressed="false">${pieSVG(pd, 7 + i * 13)}<span class="nm">${pd.name}</span></button>`).join('');
+  function pick(i) {
+    const pd = PIES[i];
+    piesEl.querySelectorAll('.pie').forEach((b, j) => { b.classList.toggle('on', j === i); b.setAttribute('aria-pressed', j === i); });
+    ticket.innerHTML = (pd.photo ? `<img class="slipimg" src="${pd.photo}" alt="${pd.name}, from @fratesi_pizza">` : '') + `<span class="mono">Order slip · No. ${String(i + 1).padStart(2, '0')}</span><h3>${pd.name}</h3><p>${pd.line}</p><ul>${pd.tops.map(t => `<li>${t}</li>`).join('')}</ul>
+      <div class="ctas" style="margin-top:0"><a class="btn red" href="https://order.toasttab.com/online/fratesispizza" target="_blank" rel="noopener">Order for pickup ↗</a><a class="btn" href="#table">Or get a table</a></div>`;
+  }
+  piesEl.onclick = e => { const b = e.target.closest('.pie'); if (b) pick(+b.dataset.i); };
+  pick(0);
+
+  // ---------- Get a table helper ----------
+  const now = new Date(), dow = now.getDay(), fmt = d => d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+  const open = { 0: 'Open 3–10 pm', 3: 'Open 5–11 pm', 4: 'Open 5–11 pm', 5: 'Open 5–11 pm', 6: 'Open 5–11 pm' };
+  $('#todayTxt').textContent = open[dow] || 'Closed today';
+  const two = new Date(now); two.setDate(two.getDate() + 14);
+  $('#winTxt').textContent = 'Tables for ' + fmt(two);
+  $('#walkTxt').textContent = dow === 0 ? 'Walk in at 3 pm' : open[dow] ? 'Line up by 4:45 pm' : 'Back Wednesday at 5';
+
+  // ---------- TV ----------
+  const CH = [
+    { no: '02', t: 'The pie', src: 'hero.jpg', cap: 'A bar pie, before the cut' },
+    { no: '04', t: 'The lamps', src: 'room-lamps.jpg', cap: 'Stained glass, by artist Autumn Casey' },
+    { no: '07', t: 'The booths', src: 'room-booths.jpg', cap: 'Red tables and wood booths' },
+    { no: '09', t: 'The oven', src: 'room-oven.jpg', cap: 'Where the pies get thin enough to snap' },
+    { no: '11', t: 'The merch', src: 'room-merch.jpg', cap: 'The tee, at fratesispizza.com/merch' }
+  ];
+  let ci = 0;
+  const st = $('#static'), sx = st.getContext('2d');
+  function noise() { const id = sx.createImageData(160, 120); for (let i = 0; i < id.data.length; i += 4) { const v = Math.random() * 255; id.data[i] = id.data[i + 1] = id.data[i + 2] = v; id.data[i + 3] = 255; } sx.putImageData(id, 0, 0); }
+  function tune(i) {
+    ci = (i + CH.length) % CH.length; const c = CH[ci];
+    $('#chlist').querySelectorAll('.ch').forEach((b, j) => b.classList.toggle('on', j === ci));
+    if (!reduce) { st.style.opacity = 1; let n = 0; const t = setInterval(() => { noise(); if (++n > 6) { clearInterval(t); st.style.opacity = 0; } }, 40); }
+    setTimeout(() => { const im = $('#tvImg'); im.onerror = () => { im.onerror = null; im.src = 'hero.jpg'; }; im.src = c.src; im.alt = c.cap; $('#osd').textContent = 'CH ' + c.no; $('#cap').textContent = c.cap; }, reduce ? 0 : 140);
+  }
+  $('#chlist').innerHTML = CH.map((c, i) => `<button class="ch" type="button" data-i="${i}"><span class="no">CH ${c.no}</span><span>${c.t}</span></button>`).join('');
+  $('#chlist').onclick = e => { const b = e.target.closest('.ch'); if (b) tune(+b.dataset.i); };
+  $('#chUp').onclick = () => tune(ci + 1); $('#chDown').onclick = () => tune(ci - 1);
+  tune(0);
+})();
+</script>
+</body>
+</html>
